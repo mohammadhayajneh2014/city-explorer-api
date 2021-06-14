@@ -19,7 +19,7 @@ server.get('/test',(req,res) =>{
 
 // http://localhost:3050/getNames?cityName=Amman
 //localhost:3050/getNames?cityName=Amman
-//localhost:3010/getNames?cityLan=-33.87&cityLon=151.21
+//localhost:3050/getNames?cityLan=-33.87&cityLon=151.21
 server.get('/getNames',(req,res)=>{
     let lan=req.query.cityLan;
     let lon=req.query.cityLon;
@@ -29,7 +29,7 @@ server.get('/getNames',(req,res)=>{
         })
         let forecast1 =  new Forecast(cityNames.date,cityNames.description) ;
         arr.push(forecast1);
-        res.send({cityNames,arr});
+        res.send(cityNames);
     })
     class Forecast {
         constructor( date1, description1){
