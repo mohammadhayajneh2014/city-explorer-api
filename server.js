@@ -1,6 +1,7 @@
 const express = require('express');
 const server = express(); 
 const weather = require('./asetss/weather.json');
+const axios = require('axios');
 const cors = require('cors');
 require(`dotenv`).config();
 
@@ -19,28 +20,38 @@ server.get('/test',(req,res) =>{
     res.send('hello from test route');
 })
 
-// http://localhost:3050/getNames?cityName=Amman
-//localhost:3050/getNames?cityName=Amman
-//localhost:3050/getNames?cityLan=-33.87&cityLon=151.21
-server.get('/getNames',(req,res)=>{
-    let lan=req.query.cityLan;
-    let lon=req.query.cityLon;
-        let cityNames = weather.city.find(item=>{
-            if(item.lat == lan && item.lon==lon)
-            return item.city_name;
-        })
-        let forecast1 =  new Forecast(cityNames.date,cityNames.description) ;
-        arr.push(forecast1);
-        res.send(cityNames);
+server.get('/weather',weatherHand)
+
+
+// https://api.weatherbit.io/v2.0/forecast/daily?lat=48.8566969&lon=2.3514616&key=df33afa53a0b46aab6cd4119db43aac6
+
+//localhost:3050/weather?cityLat=-31.9515694&cityLon=35.9239625
+function weatherHand(req,res){
+   let lat=req.query.cityLat;
+   let lon=req.query.cityLon;
+   let key=process.env.weatherApi;
+   let weatherUrl=`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${key}`;
+
+   axios.get(weatherUrl).then(apiResult =>{
+    const weatherArray = apiResult.data.data.map(item=>{
+    return new weatheritem(item);
     })
-    class Forecast {
-        constructor( date1, description1){
-             this.date = date1;
-             this.description= description1;
-        }
+res.send(weatherArray);
+})
+.catch(err =>{
+    res.send(`there is an error in getting the data => ${err}`);
+})
+
+   
+}
+
+class weatheritem{
+    constructor(item) {
+        this.date = item.valid_date;
+        this.description = item.weather.description;
+       this.temp = item.high_temp
     }
-
-
+}
 //localhost:3050 .....
 server.get('*',(req,res) =>{
     res.status(404).send('sorry, this page not found');
