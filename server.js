@@ -2,9 +2,11 @@ const express = require('express');
 const server = express(); 
 const weather = require('./asetss/weather.json');
 const cors = require('cors');
-server.use(cors()); 
+require(`dotenv`).config();
 
-const PORT = 3050; 
+
+const PORT = process.env.PORT; 
+server.use(cors()); 
 const arr=[];
 
 //localhost:3050/
