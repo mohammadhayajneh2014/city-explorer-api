@@ -28,7 +28,7 @@ class movieitem {
         this.overview=item.overview;
         this.averageVotes=item.vote_average;
         this.totalVotes=item.total_votes;
-        this.imagel= `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+        this.imagel= `https://image.tmdb.org/t/p/w500/${item.poster_path}`;
         this.popularity=item.popularity;
         this.releasedOn=item.release_date;
     }
